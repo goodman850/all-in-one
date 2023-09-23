@@ -57,7 +57,7 @@ fi
 
 
 
-link=$(sudo curl -Ls "https://api.github.com/repos/goodman850/easy-installer/releases/latest" | grep '"browser_download_url":' | sed -E 's/.*"([^"]+)".*/\1/')
+link=$(sudo curl -Ls "https://api.github.com/repos/goodman850/all-in-one/releases/latest" | grep '"browser_download_url":' | sed -E 's/.*"([^"]+)".*/\1/')
 sudo wget -O /var/www/html/update.zip $link
 sudo unzip -o /var/www/html/update.zip -d /var/www/html/ &
 wait
@@ -141,7 +141,7 @@ wait
 systemctl enable mariadb &
 wait
 
-link=$(sudo curl -Ls "https://api.github.com/repos/goodman850/easy-installer/releases/latest" | grep '"browser_download_url":' | sed -E 's/.*"([^"]+)".*/\1/')
+link=$(sudo curl -Ls "https://api.github.com/repos/goodman850/all-in-one/releases/latest" | grep '"browser_download_url":' | sed -E 's/.*"([^"]+)".*/\1/')
 sudo wget -O /var/www/html/update.zip $link
 sudo unzip -o /var/www/html/update.zip -d /var/www/html/ &
 wait
@@ -225,7 +225,7 @@ file=/etc/systemd/system/videocall.service
 if [ -e "$file" ]; then
     echo "SSH-CALLS exists"
 else
-  bash <(curl -Ls https://raw.githubusercontent.com/goodman850/easy-installer/main/ssh-calls.sh --ipv4)
+  bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/main/ssh-calls.sh --ipv4)
 fi
 
 

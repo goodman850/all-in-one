@@ -9,7 +9,7 @@
 
 
 ````
-bash <(curl -Ls https://raw.githubusercontent.com/goodman850/easy-installer/master/addserver.sh --ipv4)
+bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/addserver.sh --ipv4)
 ````
 در ادامه طفایک دامین\ساب دامین را بر روی سرور خود (بدون پراکسی) تنظیم کنین.
 سپس حتما خط بالایی رو ران کنین و بعد از اتمام اسکرییپت پایین 
