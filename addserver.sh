@@ -59,7 +59,7 @@ file=/etc/systemd/system/videocall.service
 if [ -e "$file" ]; then
     echo "SSH-CALLS exists"
 else
-  bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/main/ssh-calls.sh --ipv4)
+  bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/ssh-calls.sh --ipv4)
 fi
 echo 'www-data ALL=(ALL:ALL) NOPASSWD:/usr/sbin/adduser' | sudo EDITOR='tee -a' visudo &
 wait
@@ -110,20 +110,20 @@ wait
 echo 'www-data ALL=(ALL:ALL) NOPASSWD:/usr/local/sbin/nethogs' | sudo EDITOR='tee -a' visudo &
 wait
 echo 'www-data ALL=(ALL:ALL) NOPASSWD:/usr/sbin/iptables' | sudo EDITOR='tee -a' visudo &
-sudo wget -4 -O /var/www/html/banner.txt https://raw.githubusercontent.com/goodman850/all-in-one/main/New-Server/banner.txt
+sudo wget -4 -O /var/www/html/banner.txt https://raw.githubusercontent.com/goodman850/all-in-one/master/New-Server/banner.txt
 
 sed -i 's@#Banner none@Banner /var/www/html/banner.txt@' /etc/ssh/sshd_config
 sed -i 's@#PrintMotd yes@PrintMotd yes@' /etc/ssh/sshd_config
 sed -i 's@#PrintMotd no@PrintMotd yes@' /etc/ssh/sshd_config
 
-sudo wget -4 -O /var/www/html/killusers.sh https://raw.githubusercontent.com/goodman850/all-in-one/main/New-Server/killusers.sh
+sudo wget -4 -O /var/www/html/killusers.sh https://raw.githubusercontent.com/goodman850/all-in-one/master/New-Server/killusers.sh
 
-sudo wget -4 -O /var/www/html/kill.php https://raw.githubusercontent.com/goodman850/all-in-one/main/New-Server/kill.php
+sudo wget -4 -O /var/www/html/kill.php https://raw.githubusercontent.com/goodman850/all-in-one/master/New-Server/kill.php
 
-sudo wget -4 -O /var/www/html/syncdb.php https://raw.githubusercontent.com/goodman850/all-in-one/main/New-Server/syncdb.php
-sudo wget -4 -O /var/www/html/adduser https://raw.githubusercontent.com/goodman850/all-in-one/main/New-Server/adduser
-sudo wget -4 -O /var/www/html/delete https://raw.githubusercontent.com/goodman850/all-in-one/main/New-Server/delete
-sudo wget -4 -O /var/www/html/list https://raw.githubusercontent.com/goodman850/all-in-one/main/New-Server/list
+sudo wget -4 -O /var/www/html/syncdb.php https://raw.githubusercontent.com/goodman850/all-in-one/master/New-Server/syncdb.php
+sudo wget -4 -O /var/www/html/adduser https://raw.githubusercontent.com/goodman850/all-in-one/master/New-Server/adduser
+sudo wget -4 -O /var/www/html/delete https://raw.githubusercontent.com/goodman850/all-in-one/master/New-Server/delete
+sudo wget -4 -O /var/www/html/list https://raw.githubusercontent.com/goodman850/all-in-one/master/New-Server/list
 sudo mkdir /var/www/html/p
 sudo mkdir /var/www/html/p/log
 sudo sed -i "s/serverip/$panelip/g" /var/www/html/syncdb.php &
