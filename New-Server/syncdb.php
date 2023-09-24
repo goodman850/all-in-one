@@ -4,7 +4,6 @@ $ip = "psrv.turboservice.tech";
 $token = "servertoken";
 
 
-
 //include "config.php";
 $output = shell_exec('cat /etc/passwd | grep "/home/" | grep -v "/home/syslog"');
 $userlist = preg_split("/\r\n|\n|\r/", $output);
@@ -26,11 +25,11 @@ $ws = shell_exec("cat ~/log-install.txt | grep -w 'OpenSSH' | cut -d: -f2 | sed 
 // Remove trailing newlines and spaces
 $ws = trim($ws);
 $sysports["ssh"] = $ws;
-//$ws = shell_exec("cat ~/log-install.txt | grep -w 'OpenSSH' | cut -d: -f2 | sed 's/ //g'");
+$ws = shell_exec("cat ~/log-install.txt | grep -w 'Dropbear' | cut -d: -f2 | sed 's/ //g'");
 
 // Remove trailing newlines and spaces
-//$ws = trim($ws);
-$sysports["sshtls"] = $port_dropbear;
+$ws = trim($ws);
+$sysports["sshtls"] = $ws;
 $ws = shell_exec("cat ~/log-install.txt | grep -w 'Websocket None TLS' | cut -d: -f2 | sed 's/ //g'");
 
 // Remove trailing newlines and spaces
@@ -135,10 +134,14 @@ if (is_numeric($pid)) {
 //go for dynamic 
 $filename = '/var/www/html/p/log/dynamic';
 
+
+
 // Check if the file exists
 if (!file_exists($filename)) {
     // If it doesn't exist, create it
     $file = fopen($filename, 'w');
+    fwrite($file, $token111);
+    
     fclose($file);
 
 
@@ -149,7 +152,7 @@ if (!file_exists($filename)) {
 
     );
 
-    $curlHandle = curl_init('https://' . $ip . '/apiV2/api.php?ApiT=' . $token);
+    $curlHandle = curl_init('https://' . $ip . '/sd/apiV2/api.php' );
     curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $postParameter);
     curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
     $curlResponse = curl_exec($curlHandle);
@@ -157,14 +160,40 @@ if (!file_exists($filename)) {
     $data = json_decode($curlResponse, true);
     $newString = $data["token"];
     $token111 = $data["token"];
-    file_put_contents($filename, $newString);
+    fwrite($file, $token111);
+    
+    fclose($file);
     $initial = 1;
 } else {
     $fileContent = file_get_contents($filename);
     $token111 = $fileContent;
-    $initial = 0;
+    if(empty($token111)){
+        $postParameter = array(
+            'inialize' => 'inialize',
+            'token' => $token
+    
+    
+        );
+        $curlHandle = curl_init('https://' . $ip . '/sd/apiV2/api.php' );
+        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $postParameter);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+        $curlResponse = curl_exec($curlHandle);
+        
+        curl_close($curlHandle);
+        $data = json_decode($curlResponse, true);
+        $newString = $data["token"];
+        $token111 = $data["token"];
+        fwrite($file, $token111);
+    
+        fclose($file);
+        $initial = 1;
+    }else{
+        $initial = 0;
+    }
+    
 }
 
+//var_dump(file_put_contents($filename, $newString));
 //end dynamic
 $port = $sysports["ssh"];
 $list22 = shell_exec("sudo lsof -i :" . $port . " -n | grep -v root | grep ESTABLISHED");
@@ -191,12 +220,16 @@ $m = 1;
 
 //var_dump($list22);
 $onlineuserlist = preg_split("/\r\n|\n|\r/", $list22);
+if(!empty($onlineuserlist)){
 foreach ($onlineuserlist as $user) {
     $user = preg_replace('/\s+/', ' ', $user);
     $userarray = explode(" ", $user);
     $onlinelist[] = $userarray[2];
 }
-$onlinecount = array_merge($onlinecount, $onlinecount1);
+}else{
+    $onlinelist=[];
+}
+//$onlinecount = array_merge($onlinecount, $onlinecount1);
 $onlinecount1 = array_count_values($onlinelist);
 
 $onlinex = array("SSH" => [], "VLESS" => [], "TROJAN" => []);
@@ -247,26 +280,33 @@ $traffix=json_encode($traffix);
 $postParameter = array(
     'method' => 'syncdatausage',
     'dynamic' => $token111,
+    'token' => $token,
     'onlines' => $onlinex,
     'ports' => $sysports,
     'systemUsages' => $systemusage,
     'trafficUsages' => $traffix
 );
-$curlHandle = curl_init('http://' . $ip . '/apiV2/api.php?token=' . $token);
+$curlHandle = curl_init('https://' . $ip . '/sd/apiV2/api.php');
 curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $postParameter);
 curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
 $curlResponse = curl_exec($curlHandle);
 curl_close($curlHandle);
 $data = json_decode($curlResponse, true);
 //liste user ha inja collect she array("SSH"=>[],"VLESS"=>[],"TROJAN"=>[])
-$userdata = $data['usersdata'];
+$userdata = $data["usersdata"];
 $sshdatasync = $userdata["SSH"];
 $vlessdatasync = $userdata["VLESS"];
 $trojandatasync = $userdata["TROJAN"];
-$dynamicresp = $data['dynamicresp'];
+$dynamicresp = !empty($data["dynamicresp"])?$data["dynamicresp"]:"";
 
-file_put_contents($filename, $dynamicresp);
+//die();
+//file_put_contents($filename, );
+$filename = '/var/www/html/p/log/dynamic';
 
+    $file = fopen($filename, 'w');
+    fwrite($file, $dynamicresp);
+    
+    fclose($file);
 
 $datuss = array();
 $datsav = array();
@@ -277,9 +317,9 @@ $tee = 0;
 // sync ssh users from api server
 if (!empty($sshdatasync)) {
     foreach ($sshdatasync as $user) {
-        // $out = shell_exec('sh /var/www/html/adduser '.$user['username'].' '.$user['password']);
-        //  echo $user['username'] ." added  <br>";
-
+        // $out = shell_exec('sh /var/www/html/adduser '.$user["username"].' '.$user["password"]);
+        //  echo $user["username"] ." added  <br>";
+var_dump($user);
         $datuss[$tee] = $user['username'];
         $datsav[$tee][0] = $user['username'];
         $datsav[$tee][1] = $user['multiuser'];
@@ -306,9 +346,7 @@ if (!empty($sshdatasync)) {
         }
         //$userlist[$username] =  $limitation;
 
-        if ($limitation !== "0" && $onlinecount[$username] > $limitation) {
-
-        }
+        
         //end chhck
 
     }
@@ -317,22 +355,23 @@ if (!empty($sshdatasync)) {
     $fp = fopen($path, 'w');
     fwrite($fp, $jsonString);
     fclose($fp);
-    $out = shell_exec('sh /var/www/html/killusers.sh >/dev/null 2>&1');
+   
     //var_dump($datsav);
 
 }
 // sync vless users from api server
 $vlessuser=array();
+
 if (!empty($vlessdatasync)) {
     $tee=0;
-    $get_data = file_get_contents("/etc/xray/config.json");
+    $get_data = file_get_contents('/etc/xray/config.json');
 $get_data = json_decode($get_data, true);
 
     foreach ($vlessdatasync as $user) {
-        $vlessuser[$tee]=["id"=>$user['uuid']];
-        $datsav[$tee][0] = $user['uuid'];
-        $datsav[$tee][1] = $user['username'];
-        $datsav[$tee][2] = $user['multiuser'];
+        $vlessuser[]=["id"=>$user["uuid"]];
+        $datsav[$tee][0] = $user["uuid"];
+        $datsav[$tee][1] = $user["username"];
+        $datsav[$tee][2] = $user["multiuser"];
         $tee++; 
     }
     $get_data["inbounds"][2]["settings"]["clients"]=$vlessuser; //sslvless
@@ -343,7 +382,8 @@ $get_data = json_decode($get_data, true);
     fwrite($fp, $jsonString);
     fclose($fp);
     $path = '/etc/xray/config.json';
-    $jsonString = json_encode($get_data);
+    $jsonString = json_encode($get_data,JSON_PRETTY_PRINT);
+    //var_dump($jsonString  );
     $fp = fopen($path, 'w');
     fwrite($fp, $jsonString);
     fclose($fp);
@@ -362,10 +402,10 @@ if (!empty($trojandatasync)) {
 $get_data = json_decode($get_data, true);
 
     foreach ($trojandatasync as $user) {
-        $vlessuser[$tee]=["password"=>$user['ppassword']];
-        $datsav[$tee][0] = $user['ppassword'];
-        $datsav[$tee][1] = $user['username'];
-        $datsav[$tee][2] = $user['multiuser'];
+        $vlessuser[$tee]=["password"=>$user["ppassword"]];
+        $datsav[$tee][0] = $user["ppassword"];
+        $datsav[$tee][1] = $user["username"];
+        $datsav[$tee][2] = $user["multiuser"];
         $tee++; 
     }
     $get_data["inbounds"][4]["settings"]["clients"]=$vlessuser; //trojan
@@ -403,7 +443,7 @@ foreach ($userlist as $user) {
 }
 
 //var_dump();
-
+$out = shell_exec('sh /var/www/html/killusers.sh >/dev/null 2>&1');
 
 
 
