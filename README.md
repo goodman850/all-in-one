@@ -14,9 +14,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/a
 در ادامه طفایک دامین\ساب دامین را بر روی سرور خود (بدون پراکسی) تنظیم کنین.
 سپس حتما خط بالایی رو ران کنین و بعد از اتمام اسکرییپت پایین 
 
-````
-rm -f setup.sh && apt update && apt upgrade -y && update-grub && sleep 2 && apt-get update -y && apt-get upgrade && apt update && apt install -y bzip2 gzip coreutils screen curl unzip && wget https://raw.githubusercontent.com/goodman850/anti/main/setup.sh && chmod +x setup.sh && sed -i -e 's/\r$//' setup.sh && screen -S setup ./setup.sh
-````
+
 
 این اسکریپت سرویس وب سوکت و ssl/TLS و دراب بیر(اتصال مستقیم) رو خودش نصب میکنه واستون سرتیفیکیت هم میگیره همچنین به هرنوع سروری(ای پی سفید یا کثیف فرقی نداره) قابلیت خدمات دهی میده (دیگه نیازی نیست دنبال ای پی سفید برگردین P: )
 
