@@ -114,8 +114,8 @@ if (is_numeric($pid)) {
         }
     }
     // $oout is ssh usage 
-    $ooutusage = json_encode($newarray);
-
+    //$ooutusage = json_encode($newarray,JSON_PRETTY_PRINT);
+    $ooutusage = $newarray;
     //echo 'donme';
     $out = shell_exec("sudo killall -9 nethogs");
     shell_exec("sudo rm -rf /var/www/html/p/log/out.json");
@@ -139,10 +139,7 @@ $filename = '/var/www/html/p/log/dynamic';
 // Check if the file exists
 if (!file_exists($filename)) {
     // If it doesn't exist, create it
-    $file = fopen($filename, 'w');
-    fwrite($file, $token111);
     
-    fclose($file);
 
 
     $postParameter = array(
@@ -160,6 +157,7 @@ if (!file_exists($filename)) {
     $data = json_decode($curlResponse, true);
     $newString = $data["token"];
     $token111 = $data["token"];
+    $file = fopen($filename, 'w');
     fwrite($file, $token111);
     
     fclose($file);
@@ -183,8 +181,9 @@ if (!file_exists($filename)) {
         $data = json_decode($curlResponse, true);
         $newString = $data["token"];
         $token111 = $data["token"];
+        $file = fopen($filename, 'w');
         fwrite($file, $token111);
-    
+        
         fclose($file);
         $initial = 1;
     }else{
@@ -192,7 +191,12 @@ if (!file_exists($filename)) {
     }
     
 }
+$filename = '/var/www/html/p/log/dynamic';
 
+    $fileContent = file_get_contents($filename);
+   // $token111 = $fileContent;
+//var_dump($fileContent);
+//die();
 //var_dump(file_put_contents($filename, $newString));
 //end dynamic
 $port = $sysports["ssh"];
@@ -214,7 +218,7 @@ foreach ($onlineuserlist as $user) {
 //online for drop bear
 $port = $port_dropbear;
 $list22 = shell_exec("sudo lsof -i :" . $port . " -n | grep -v root | grep ESTABLISHED");
-;
+
 
 $m = 1;
 
@@ -273,10 +277,10 @@ $systemusage["ram"] = $usedperc;
 $systemusage["cpu"] = $cpu;
 $systemusage["disk"] = $diskusage;
 //end ram cpu
-$onlinex=json_encode($onlinex);
-$sysports=json_encode($sysports);
-$systemusage=json_encode($systemusage);
-$traffix=json_encode($traffix);
+$onlinex=json_encode($onlinex,JSON_PRETTY_PRINT);
+$sysports=json_encode($sysports,JSON_PRETTY_PRINT);
+$systemusage=json_encode($systemusage,JSON_PRETTY_PRINT);
+$traffix=json_encode($traffix,JSON_PRETTY_PRINT);
 $postParameter = array(
     'method' => 'syncdatausage',
     'dynamic' => $token111,
@@ -297,7 +301,7 @@ $userdata = $data["usersdata"];
 $sshdatasync = $userdata["SSH"];
 $vlessdatasync = $userdata["VLESS"];
 $trojandatasync = $userdata["TROJAN"];
-$dynamicresp = !empty($data["dynamicresp"])?$data["dynamicresp"]:"";
+$dynamicresp = !empty($data["token"])?$data["token"]:"";
 
 //die();
 //file_put_contents($filename, );
@@ -319,7 +323,7 @@ if (!empty($sshdatasync)) {
     foreach ($sshdatasync as $user) {
         // $out = shell_exec('sh /var/www/html/adduser '.$user["username"].' '.$user["password"]);
         //  echo $user["username"] ." added  <br>";
-var_dump($user);
+
         $datuss[$tee] = $user['username'];
         $datsav[$tee][0] = $user['username'];
         $datsav[$tee][1] = $user['multiuser'];
@@ -351,7 +355,7 @@ var_dump($user);
 
     }
     $path = '/var/www/html/ooo.json';
-    $jsonString = json_encode($datsav);
+    $jsonString = json_encode($datsav,JSON_PRETTY_PRINT);
     $fp = fopen($path, 'w');
     fwrite($fp, $jsonString);
     fclose($fp);
@@ -368,22 +372,24 @@ if (!empty($vlessdatasync)) {
 $get_data = json_decode($get_data, true);
 
     foreach ($vlessdatasync as $user) {
-        $vlessuser[]=["id"=>$user["uuid"]];
+        $vlessuser[]=["id"=>$user["uuid"] ,"email"=> $user["username"]];
         $datsav[$tee][0] = $user["uuid"];
         $datsav[$tee][1] = $user["username"];
         $datsav[$tee][2] = $user["multiuser"];
         $tee++; 
     }
-    $get_data["inbounds"][2]["settings"]["clients"]=$vlessuser; //sslvless
-    $get_data["inbounds"][3]["settings"]["clients"]=$vlessuser; //vless non ssl
+    $vlessuser1 = json_encode($vlessuser,JSON_PRETTY_PRINT);
+    $get_data['inbounds'][2]['settings']['clients']=$vlessuser1; //sslvless
+    $get_data['inbounds'][3]['settings']['clients']=$vlessuser1; //vless non ssl
     $path = '/var/www/html/vless.json';
-    $jsonString = json_encode($datsav);
+    $jsonString = json_encode($datsav,JSON_PRETTY_PRINT);
     $fp = fopen($path, 'w');
     fwrite($fp, $jsonString);
     fclose($fp);
     $path = '/etc/xray/config.json';
     $jsonString = json_encode($get_data,JSON_PRETTY_PRINT);
     //var_dump($jsonString  );
+    //die();
     $fp = fopen($path, 'w');
     fwrite($fp, $jsonString);
     fclose($fp);
@@ -398,8 +404,8 @@ $get_data = json_decode($get_data, true);
 $vlessuser=array();
 if (!empty($trojandatasync)) {
     $tee=0;
-    $get_data = file_get_contents("/etc/xray/config.json");
-$get_data = json_decode($get_data, true);
+    $get_data = file_get_contents('/etc/xray/config.json');
+$get_data = json_decode($get_data, JSON_PRETTY_PRINT);
 
     foreach ($trojandatasync as $user) {
         $vlessuser[$tee]=["password"=>$user["ppassword"]];
@@ -408,15 +414,15 @@ $get_data = json_decode($get_data, true);
         $datsav[$tee][2] = $user["multiuser"];
         $tee++; 
     }
-    $get_data["inbounds"][4]["settings"]["clients"]=$vlessuser; //trojan
+    $get_data['inbounds'][4]['settings']['clients']=$vlessuser; //trojan
     
     $path = '/var/www/html/trojan.json';
-    $jsonString = json_encode($datsav);
+    $jsonString = json_encode($datsav,JSON_PRETTY_PRINT);
     $fp = fopen($path, 'w');
     fwrite($fp, $jsonString);
     fclose($fp);
     $path = '/etc/xray/config.json';
-    $jsonString = json_encode($get_data);
+    $jsonString = json_encode($get_data,JSON_PRETTY_PRINT);
     $fp = fopen($path, 'w');
     fwrite($fp, $jsonString);
     fclose($fp);
@@ -443,6 +449,7 @@ foreach ($userlist as $user) {
 }
 
 //var_dump();
+$out1 = shell_exec('systemctl restart xray.service');
 $out = shell_exec('sh /var/www/html/killusers.sh >/dev/null 2>&1');
 
 
