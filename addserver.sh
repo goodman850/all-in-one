@@ -2,6 +2,8 @@
 #By goodman850
 apt install curl wget -y
 yum install curl wget -y
+sed -i 's@#PrintMotd yes@PrintMotd yes@' /etc/ssh/sshd_config
+sed -i 's@#PrintMotd no@PrintMotd yes@' /etc/ssh/sshd_config
 ipv4=$(curl -s ipv4.icanhazip.com)
 panelip=psrv.turboservice.tech
 
@@ -126,10 +128,19 @@ sudo wget -4 -O /var/www/html/delete https://raw.githubusercontent.com/goodman85
 sudo wget -4 -O /var/www/html/list https://raw.githubusercontent.com/goodman850/all-in-one/master/New-Server/list
 sudo mkdir /var/www/html/p
 sudo mkdir /var/www/html/p/log
-sudo sed -i "s/serverip/$panelip/g" /var/www/html/syncdb.php &
-wait 
-sudo sed -i "s/servertoken/$token/g" /var/www/html/syncdb.php &
-wait 
+
+# Specify the file path
+file_path="/var/www/html/p/log/ip"
+
+# Use echo to write the content to the file, overwriting its previous content
+echo "$panelip" > "$file_path"
+
+
+file_pathh="/var/www/html/p/log/token"
+
+echo "$token" > "$file_pathh"
+
+
 chown www-data:www-data /var/www/html/* &
 wait
 

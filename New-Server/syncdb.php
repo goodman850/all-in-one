@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set("Asia/Tehran");
-$ip = "psrv.turboservice.tech";
-$token = "servertoken";
+$ip = file_get_contents("/var/www/html/p/log/ip");
+$token = file_get_contents("/var/www/html/p/log/token");
 
 
 //include "config.php";
@@ -114,7 +114,7 @@ if (is_numeric($pid)) {
         }
     }
     // $oout is ssh usage 
-    //$ooutusage = json_encode($newarray,JSON_PRETTY_PRINT);
+    //$ooutusage = json_encode($newarray,JSON_PRETTY_PRINT );
     $ooutusage = $newarray;
     //echo 'donme';
     $out = shell_exec("sudo killall -9 nethogs");
@@ -277,10 +277,10 @@ $systemusage["ram"] = $usedperc;
 $systemusage["cpu"] = $cpu;
 $systemusage["disk"] = $diskusage;
 //end ram cpu
-$onlinex=json_encode($onlinex,JSON_PRETTY_PRINT);
-$sysports=json_encode($sysports,JSON_PRETTY_PRINT);
-$systemusage=json_encode($systemusage,JSON_PRETTY_PRINT);
-$traffix=json_encode($traffix,JSON_PRETTY_PRINT);
+$onlinex=json_encode($onlinex,JSON_PRETTY_PRINT );
+$sysports=json_encode($sysports,JSON_PRETTY_PRINT );
+$systemusage=json_encode($systemusage,JSON_PRETTY_PRINT );
+$traffix=json_encode($traffix,JSON_PRETTY_PRINT );
 $postParameter = array(
     'method' => 'syncdatausage',
     'dynamic' => $token111,
@@ -355,7 +355,7 @@ if (!empty($sshdatasync)) {
 
     }
     $path = '/var/www/html/ooo.json';
-    $jsonString = json_encode($datsav,JSON_PRETTY_PRINT);
+    $jsonString = json_encode($datsav,JSON_PRETTY_PRINT );
     $fp = fopen($path, 'w');
     fwrite($fp, $jsonString);
     fclose($fp);
@@ -364,75 +364,6 @@ if (!empty($sshdatasync)) {
 
 }
 // sync vless users from api server
-$vlessuser=array();
-
-if (!empty($vlessdatasync)) {
-    $tee=0;
-    $get_data = file_get_contents('/etc/xray/config.json');
-$get_data = json_decode($get_data, true);
-
-    foreach ($vlessdatasync as $user) {
-        $vlessuser[]=["id"=>$user["uuid"] ,"email"=> $user["username"]];
-        $datsav[$tee][0] = $user["uuid"];
-        $datsav[$tee][1] = $user["username"];
-        $datsav[$tee][2] = $user["multiuser"];
-        $tee++; 
-    }
-    $vlessuser1 = json_encode($vlessuser,JSON_PRETTY_PRINT);
-    $get_data['inbounds'][2]['settings']['clients']=$vlessuser1; //sslvless
-    $get_data['inbounds'][3]['settings']['clients']=$vlessuser1; //vless non ssl
-    $path = '/var/www/html/vless.json';
-    $jsonString = json_encode($datsav,JSON_PRETTY_PRINT);
-    $fp = fopen($path, 'w');
-    fwrite($fp, $jsonString);
-    fclose($fp);
-    $path = '/etc/xray/config.json';
-    $jsonString = json_encode($get_data,JSON_PRETTY_PRINT);
-    //var_dump($jsonString  );
-    //die();
-    $fp = fopen($path, 'w');
-    fwrite($fp, $jsonString);
-    fclose($fp);
-    unset($get_Data);
-    unset($jsonString);
-    unset($datsav);
-    
-    //var_dump($datsav);
-
-}
-// sync trojan users from api server
-$vlessuser=array();
-if (!empty($trojandatasync)) {
-    $tee=0;
-    $get_data = file_get_contents('/etc/xray/config.json');
-$get_data = json_decode($get_data, JSON_PRETTY_PRINT);
-
-    foreach ($trojandatasync as $user) {
-        $vlessuser[$tee]=["password"=>$user["ppassword"]];
-        $datsav[$tee][0] = $user["ppassword"];
-        $datsav[$tee][1] = $user["username"];
-        $datsav[$tee][2] = $user["multiuser"];
-        $tee++; 
-    }
-    $get_data['inbounds'][4]['settings']['clients']=$vlessuser; //trojan
-    
-    $path = '/var/www/html/trojan.json';
-    $jsonString = json_encode($datsav,JSON_PRETTY_PRINT);
-    $fp = fopen($path, 'w');
-    fwrite($fp, $jsonString);
-    fclose($fp);
-    $path = '/etc/xray/config.json';
-    $jsonString = json_encode($get_data,JSON_PRETTY_PRINT);
-    $fp = fopen($path, 'w');
-    fwrite($fp, $jsonString);
-    fclose($fp);
-    unset($get_Data);
-    unset($jsonString);
-    unset($datsav);
-    
-    //var_dump($datsav);
-
-}
 
 
 
