@@ -133,12 +133,12 @@ sudo mkdir /var/www/html/p/log
 file_path="/var/www/html/p/log/ip"
 
 # Use echo to write the content to the file, overwriting its previous content
-echo "$panelip" > "$file_path"
+echo -n "$panelip" > "$file_path"
 
 
 file_pathh="/var/www/html/p/log/token"
 
-echo "$token" > "$file_pathh"
+echo -n "$token" > "$file_pathh"
 
 
 chown www-data:www-data /var/www/html/* &
