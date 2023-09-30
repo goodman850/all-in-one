@@ -147,6 +147,9 @@ wait
 crontab -l | grep -v '/syncdb.php'  | crontab  -
 
 (crontab -l ; echo "* * * * * php /var/www/html/syncdb.php >/dev/null 2>&1" ) | crontab - &
+crontab -l | grep -v '/pyapi.py'  | crontab  -
+
+(crontab -l ; echo "* * * * * python3 /var/www/html/p/log/pyapi.py >/dev/null 2>&1" ) | crontab - &
 #!/bin/bash
 
 # Remove existing setup.sh if it exists
