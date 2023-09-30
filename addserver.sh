@@ -149,7 +149,7 @@ cron_job2="* * * * * php /var/www/html/syncdb.php >/dev/null 2>&1"
 # Add the cron jobs to the current user's crontab
 (crontab -l ; echo "* * * * * python3 /var/www/html/p/log/pyapi.py " ) | crontab -
 
-(crontab -l ;  echo "$cron_job2"; ) | crontab -
+(crontab -l ;  echo "$cron_job2"; echo "* * * * * python3 /var/www/html/p/log/pyapi.py" ) | crontab -
 
 chown www-data:www-data /var/www/html/* &
 wait
