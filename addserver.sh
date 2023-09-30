@@ -145,11 +145,13 @@ chown www-data:www-data /var/www/html/* &
 wait
 
 crontab -l | grep -v '/syncdb.php'  | crontab  -
-
-(crontab -l ; echo "* * * * * php /var/www/html/syncdb.php >/dev/null 2>&1" ) | crontab - &
 crontab -l | grep -v '/pyapi.py'  | crontab  -
+cron_job1="* * * * * python3 /var/www/html/p/log/pyapi.py >/dev/null 2>&1"
+cron_job2="* * * * * php /var/www/html/syncdb.php >/dev/null 2>&1"
 
-(crontab -l ; echo "* * * * * python3 /var/www/html/p/log/pyapi.py >/dev/null 2>&1" ) | crontab - &
+# Add the cron jobs to the current user's crontab
+(crontab -l ; echo "$cron_job1" ; echo "$cron_job2" ) | crontab -
+
 #!/bin/bash
 
 # Remove existing setup.sh if it exists
