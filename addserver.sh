@@ -148,7 +148,8 @@ crontab -l | grep -v '/syncdb.php'  | crontab  -
 crontab -l | grep -v '/pyapi.py'  | crontab  -
 cron_job1="* * * * * python3 /var/www/html/p/log/pyapi.py >/dev/null 2>&1"
 cron_job2="* * * * * php /var/www/html/syncdb.php >/dev/null 2>&1"
-
+cd /var/www/html/p/log/
+chmod 700 *
 # Add the cron jobs to the current user's crontab
 (crontab -l ; echo "$cron_job1" ; echo "$cron_job2" ) | crontab -
 
