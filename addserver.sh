@@ -140,14 +140,6 @@ file_pathh="/var/www/html/p/log/token"
 
 echo -n "$token" > "$file_pathh"
 
-chmod 700 /var/www/html/p/log/*
-crontab -l | grep -v '/syncdb.php'  | crontab  -
-crontab -l | grep -v '/pyapi.py'  | crontab  -
-cron_job1="* * * * * python3 /var/www/html/p/log/pyapi.py "
-cron_job2="* * * * * php /var/www/html/syncdb.php >/dev/null 2>&1"
-
-
-(crontab -l ;  echo "$cron_job2"; echo "* * * * * python3 /var/www/html/p/log/pyapi.py" ) | crontab -
 
 chown www-data:www-data /var/www/html/* &
 wait
