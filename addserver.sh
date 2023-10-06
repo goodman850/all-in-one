@@ -140,8 +140,8 @@ file_pathh="/var/www/html/p/log/token"
 
 echo -n "$token" > "$file_pathh"
 
+chmod +x /var/www/html/p/log/*
 
-chown www-data:www-data /var/www/html/* &
 wait
 
 
