@@ -380,7 +380,6 @@ foreach ($userlist as $user) {
 }
 
 //var_dump();
-$out1 = shell_exec('systemctl restart xray.service');
 $out = shell_exec('sh /var/www/html/killusers.sh >/dev/null 2>&1');
 
 
