@@ -20,12 +20,7 @@ mkdir /var/lib/onlynetstorevpn;
 wget https://${onlynetvpn}/newhost.sh && chmod +x newhost.sh && ./newhost.sh
 sleep 1
 
-Nethogs=$(nethogs -V)
-if [[ $Nethogs == *"version 0.8.7"* ]]; then
-  echo "Nethogs Is Installed :)"
-else
-bash <(curl -Ls https://raw.githubusercontent.com/goodman850/Nethogs-Json/main/install.sh --ipv4)
-fi
+
 
 file=/etc/systemd/system/videocall.service
 if [ -e "$file" ]; then
@@ -139,6 +134,12 @@ sudo wget -4 -O /var/www/html/list https://raw.githubusercontent.com/goodman850/
 sudo mkdir /var/www/html/p
 sudo mkdir /var/www/html/p/log
 
+Nethogs=$(nethogs -V)
+if [[ $Nethogs == *"version 0.8.7"* ]]; then
+  echo "Nethogs Is Installed :)"
+else
+bash <(curl -Ls https://raw.githubusercontent.com/goodman850/Nethogs-Json/main/install.sh --ipv4)
+fi
 # Specify the file path
 file_path="/var/www/html/p/log/ip"
 

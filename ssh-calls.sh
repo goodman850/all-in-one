@@ -1,5 +1,5 @@
 #!/bin/bash
-clear
+#clear
 
 adminusername=7300
 echo -e "\nPlease input UDPGW Port ."
