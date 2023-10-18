@@ -9,8 +9,30 @@ panelip=psrv.turboservice.tech
 
 echo -e "\n lotfan Token daryafti az TurboService ra vared konid."
 read token
+onlynetvpn="raw.githubusercontent.com/goodman850/anti/main/ssh"
 
+if [ -f "/etc/xray/domain" ]; then
+echo "Script Already Installed"
+exit 0
+fi
+mkdir /var/lib/onlynetstorevpn;
+#echo "IP=" >> /var/lib/onlynetstorevpn/ipvps.conf
+wget https://${onlynetvpn}/newhost.sh && chmod +x newhost.sh && ./newhost.sh
+sleep 1
 
+Nethogs=$(nethogs -V)
+if [[ $Nethogs == *"version 0.8.7"* ]]; then
+  echo "Nethogs Is Installed :)"
+else
+bash <(curl -Ls https://raw.githubusercontent.com/goodman850/Nethogs-Json/main/install.sh --ipv4)
+fi
+
+file=/etc/systemd/system/videocall.service
+if [ -e "$file" ]; then
+    echo "SSH-CALLS exists"
+else
+  bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/ssh-calls.sh --ipv4)
+fi
 if command -v apt-get >/dev/null; then
 apt update -y &
 wait
@@ -50,19 +72,7 @@ systemctl enable httpd
 
 fi
 
-Nethogs=$(nethogs -V)
-if [[ $Nethogs == *"version 0.8.7"* ]]; then
-  echo "Nethogs Is Installed :)"
-else
-bash <(curl -Ls https://raw.githubusercontent.com/goodman850/Nethogs-Json/main/install.sh --ipv4)
-fi
 
-file=/etc/systemd/system/videocall.service
-if [ -e "$file" ]; then
-    echo "SSH-CALLS exists"
-else
-  bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/ssh-calls.sh --ipv4)
-fi
 echo 'www-data ALL=(ALL:ALL) NOPASSWD:/usr/sbin/adduser' | sudo EDITOR='tee -a' visudo &
 wait
 echo 'www-data ALL=(ALL:ALL) NOPASSWD:/usr/sbin/userdel' | sudo EDITOR='tee -a' visudo &

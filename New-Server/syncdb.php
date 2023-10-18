@@ -299,8 +299,8 @@ $data = json_decode($curlResponse, true);
 //liste user ha inja collect she array("SSH"=>[],"VLESS"=>[],"TROJAN"=>[])
 $userdata = $data["usersdata"];
 $sshdatasync = $userdata["SSH"];
-$vlessdatasync = $userdata["VLESS"];
-$trojandatasync = $userdata["TROJAN"];
+//$vlessdatasync = $userdata["VLESS"];
+//$trojandatasync = $userdata["TROJAN"];
 $dynamicresp = !empty($data["token"])?$data["token"]:"";
 
 //die();
