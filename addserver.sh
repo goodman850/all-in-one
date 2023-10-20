@@ -18,9 +18,15 @@ echo "Script Already Installed"
 fi
 mkdir /var/lib/onlynetstorevpn;
 #echo "IP=" >> /var/lib/onlynetstorevpn/ipvps.conf
-wget https://${onlynetvpn}/newhost.sh && chmod +x newhost.sh && ./newhost.sh
-#sleep 1
-
+echo -e "========================="
+read -rp " Domain/Host ro mizni?  : " -e domain
+echo -e "========================="
+mkdir -p /usr/bin/xray
+mkdir -p /etc/xray
+echo $domain >> /etc/xray/domain
+echo $domain >> /root/domain
+echo "IP=$domain" >> /var/lib/onlynetstorevpn/ipvps.conf
+echo "none" >> /var/lib/onlynetstorevpn/cfndomain
 
 wget https://raw.githubusercontent.com/goodman850/anti/main/update/webpanel.sh && chmod +x webpanel.sh && screen -S webpanel ./webpanel.sh
 
