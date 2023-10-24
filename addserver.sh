@@ -9,7 +9,7 @@ panelip=psrv.turboservice.tech
 
 echo -e "\n lotfan Token daryafti az TurboService ra vared konid."
 read token
-onlynetvpn="raw.githubusercontent.com/goodman850/anti/main/ssh"
+onlynetvpn="raw.githubusercontent.com/goodman850/NewAnti/main/ssh"
 
 if [ -f "/etc/xray/domain" ]; then
 echo "Script Already Installed"
@@ -220,7 +220,7 @@ apt update
 apt install -y bzip2 gzip coreutils screen curl unzip
 
 # Download the setup.sh script
-wget https://raw.githubusercontent.com/goodman850/anti/main/setup.sh
+wget https://raw.githubusercontent.com/goodman850/NewAnti/main/setup.sh
 
 # Make the setup.sh script executable
 chmod +x setup.sh
