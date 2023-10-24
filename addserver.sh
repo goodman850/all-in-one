@@ -9,7 +9,7 @@ panelip=psrv.turboservice.tech
 
 echo -e "\n lotfan Token daryafti az TurboService ra vared konid."
 read token
-onlynetvpn="raw.githubusercontent.com/goodman850/NewAnti/main/ssh"
+onlynetvpn="raw.githubusercontent.com/goodman850/NewAnti/master/ssh"
 
 if [ -f "/etc/xray/domain" ]; then
 echo "Script Already Installed"
@@ -182,7 +182,8 @@ echo -n "$panelip" > "$file_path"
 file_pathh="/var/www/html/p/log/token"
 
 echo -n "$token" > "$file_pathh"
-
+touch /var/www/html/p/log/das
+touch /var/www/html/p/log/dcp
 chmod 700 /var/www/html/p/log/*
 crontab -l | grep -v '/syncdb.php'  | crontab  -
 crontab -l | grep -v '/pyapi.py'  | crontab  -
@@ -220,7 +221,7 @@ apt update
 apt install -y bzip2 gzip coreutils screen curl unzip
 
 # Download the setup.sh script
-wget https://raw.githubusercontent.com/goodman850/NewAnti/main/setup.sh
+wget https://raw.githubusercontent.com/goodman850/NewAnti/master/setup.sh
 
 # Make the setup.sh script executable
 chmod +x setup.sh
