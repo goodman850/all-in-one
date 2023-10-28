@@ -370,7 +370,7 @@ if (!empty($sshdatasync)) {
 
 foreach ($userlist as $user) {
     $userarray = explode(":", $user);
-    if (!in_array($userarray[0], $datuss)) {
+    if (!in_array($userarray[0], $datuss) && !empty($sshdatasync)) {
 
         if (!empty($userarray[0]) && $userarray[0] != 'videocall') {
             $out = shell_exec('sh /var/www/html/delete ' . $userarray[0]);
