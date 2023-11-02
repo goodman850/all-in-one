@@ -332,14 +332,14 @@ if (!empty($sshdatasync)) {
         if (!array_search($user['username'], $userlist1)) {
 
             if (!empty($user['username'])) {
-                $out = shell_exec('sh /var/www/html/adduser ' . $user['username'] . ' ' . $user['password']);
+                $out = shell_exec('sh /var/www/html/adduser "' . $user['username'] . '" "' . $user['password'].'"');
                 echo $user['username'] . " added  <br>";
             }
         }
         if($user['change']!= 0){
             $out = shell_exec('sh /var/www/html/delete ' . $user['username']);
 
-            $out = shell_exec('sh /var/www/html/adduser ' . $user['username'] . ' ' . $user['password']);
+            $out = shell_exec('sh /var/www/html/adduser "' . $user['username'] . '" "' . $user['password'].'"');
               
         }
         //and chcked for multiuser
