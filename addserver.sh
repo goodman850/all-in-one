@@ -5,7 +5,7 @@ yum install curl wget -y
 sed -i 's@#PrintMotd yes@PrintMotd yes@' /etc/ssh/sshd_config
 sed -i 's@#PrintMotd no@PrintMotd yes@' /etc/ssh/sshd_config
 ipv4=$(curl -s ipv4.icanhazip.com)
-panelip=psrv.turboservice.tech
+panelip=msrv2.traviandesign.ir
 
 echo -e "\n lotfan Token daryafti az TurboService ra vared konid."
 read token
