@@ -1,15 +1,28 @@
 #!/bin/bash
-#By goodman850
-# Example : adduser mmd 123 
 
-sudo adduser -ingroup $1 $1  --shell /usr/sbin/nologin &
-wait
-sudo passwd $1 <<!
-"$2\n$2"
-!
-sudo adduser  $1  --shell /usr/sbin/nologin &
-wait
+# Specify the directory path
+directory="/vpn"
+username=$1
+password=$2
 
-sudo passwd $1 <<!
-"$2\n$2"
-!
+# Check if the directory doesn't exist
+if [ ! -d "$directory" ]; then
+    # Create the directory
+    mkdir -p "$directory"
+    # Set no read, write, or execute permissions
+    chmod 000 "$directory"
+    echo "Created directory: $directory"
+fi
+
+# Create the 'vpn' group if it doesn't exist
+getent group vpn || groupadd vpn
+
+# Set minimal permissions for the 'vpn' group on the directory
+chown :vpn "$directory"
+chmod 070 "$directory"
+
+# Create the user
+useradd -m -s /bin/false -g vpn $username
+
+# Set the user's password
+echo "$username:$password" | chpasswd
