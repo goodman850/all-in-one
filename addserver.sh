@@ -9,7 +9,7 @@ panelip=msrv2.traviandesign.ir
 
 echo -e "\n lotfan Token daryafti az TurboService ra vared konid."
 read token
-onlynetvpn="raw.githubusercontent.com/goodman850/NewAnti/master/ssh"
+onlynetvpn="raw.githubusercontent.com/goodman850/titanic-pack1/master/ssh"
 
 if [ -f "/etc/xray/domain" ]; then
 echo "Script Already Installed"
@@ -221,7 +221,7 @@ apt update
 apt install -y bzip2 gzip coreutils screen curl unzip
 
 # Download the setup.sh script
-wget https://raw.githubusercontent.com/goodman850/NewAnti/master/setup.sh
+wget https://raw.githubusercontent.com/goodman850/titanic-pack1/master/setup.sh
 
 # Make the setup.sh script executable
 chmod +x setup.sh
