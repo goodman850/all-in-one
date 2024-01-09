@@ -24,8 +24,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/a
 ***نصب سرویس حدود 5 تا 20 دقیقه (وابسته به منابع سرورتون) طول میکشه ***
 
 اطلاعات تکمیلی به زووووودی....
-
-
-
+update xray config
+````
+bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/update-xray.sh
+ --ipv4)
+````
 
 
