@@ -26,8 +26,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/a
 اطلاعات تکمیلی به زووووودی....
 update xray config
 ````
-bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/update-xray.sh
- --ipv4)
+bash <(curl -Ls https://raw.githubusercontent.com/goodman850/all-in-one/master/update-xray.sh --ipv4)
 ````
 
 
