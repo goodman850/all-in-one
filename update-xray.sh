@@ -2,6 +2,7 @@
 #By goodman850
 # Make Folder XRay
 domain=$(cat /etc/xray/domain)
+rm -rf /var/log/xray/
 mkdir -p /var/log/xray/
 touch /var/log/xray/access.log
 touch /var/log/xray/error.log
@@ -24,6 +25,7 @@ uuid=$(cat /proc/sys/kernel/random/uuid)
 path_crt="/etc/xray/xray.crt"
 path_key="/etc/xray/xray.key"
 rm -rf /etc/xray/config.json
+
 touch /etc/xray/config.json
 
 cat >/etc/xray/config.json <<END
