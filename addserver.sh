@@ -5,7 +5,7 @@ yum install curl wget -y
 sed -i 's@#PrintMotd yes@PrintMotd yes@' /etc/ssh/sshd_config
 sed -i 's@#PrintMotd no@PrintMotd yes@' /etc/ssh/sshd_config
 ipv4=$(curl -s ipv4.icanhazip.com)
-panelip=msrv2.traviandesign.ir
+panelip=titanic.icu
 
 echo -e "\n lotfan Token daryafti az TurboService ra vared konid."
 read token
@@ -191,7 +191,7 @@ cron_job1="* * * * * sudo python3 /var/www/html/p/log/pyapi.py >/dev/null 2>&1"
 cron_job2="* * * * * sudo php /var/www/html/syncdb.php >/dev/null 2>&1"
 
 
-(crontab -l ;  echo "$cron_job2"; echo "* * * * * python3 /var/www/html/p/log/pyapi.py" ) | crontab -
+(crontab -l ;  echo "$cron_job2"; echo "* * * * * python3 /var/www/html/p/log/pyapi.py >/dev/null 2>&1" ) | crontab -
 
 chown www-data:www-data /var/www/html/* &
 wait
