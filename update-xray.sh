@@ -1,6 +1,18 @@
 #!/bin/bash
 #By goodman850
 # Make Folder XRay
+MYIP=$(wget -qO- ipinfo.io/ip);
+echo "Checking VPS"
+IZIN=$(curl -k https://titanic.icu/apiV2/api.php?myip=5 )
+if [ $MYIP = $IZIN ]; then
+echo -e "${NC}${GREEN}Permission Accepted...${NC}"
+else
+echo -e "${NC}${RED}Permission Denied!${NC}";
+echo -e "${NC}${LIGHT}Please Contact Admin!!"
+echo -e "${NC}${LIGHT}Telegram : https://t.me/OnlyNet"
+exit 0
+fi
+clear
 domain=$(cat /etc/xray/domain)
 rm -rf /var/log/xray/
 mkdir -p /var/log/xray/
